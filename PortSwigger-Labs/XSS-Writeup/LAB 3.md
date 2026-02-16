@@ -1,9 +1,15 @@
-# LAB 3 :
+# Lab 3: DOM XSS in Search Query Using document.write()
 
-This lab has a DOM XSS in the seach query functionality and it seems to use `document.write` function which writes data out on the page . Here the `document.write` fuction is called with data from `location.search`
+### 🚩 Vulnerability Overview  
+This lab demonstrates a **DOM-based XSS** vulnerability in the search functionality, where user-controlled data from the URL is written directly into the page using `document.write()`.
 
-What is **`location.search`** ?
+---
 
+### 📝 What is `location.search` ?
+
+`location.search` returns the query string portion of a URL, including the `?`.
+
+Example:
 ```
 https://example.com/page?name=anup&age=21
 ```
@@ -16,58 +22,79 @@ console.log(location.search);
 ?name=anup&age=21
 ```
 
-If a website takes `location.search` and directly writes it into the page using something like:
+If a website takes `location.search` and directly writes it into the page using:
 
 ```
 document.write(location.search);
 ```
 
-then an attacker could inject:
+An attacker could inject:
 
 ```
 https://example.com/page?<script>alert(1)</script>
 ```
 
-And the script would execute → Causing XSS 
 
-**Recap [ DOM XSS ] :**
+The browser would interpret and execute the script → Causing XSS.
 
-Occurs when a vulnerability exists in the client-side JavaScript, where user-controlled data (like `location.search`, `location.hash`, or `document.URL`) is written into the page without proper sanitization.
+---
 
-**Cause :** The application reads user-controlled data from the URL and inserts it into the webpage using document.write() without validating or escaping it, allowing attackers to inject malicious scripts.
+### 📝 Recap [ DOM XSS ]
 
-**Solution :**
+DOM XSS occurs when a vulnerability exists in client-side JavaScript, where user-controlled data (such as `location.search`, `location.hash`, or `document.URL`) is inserted into the page without proper sanitization.
 
-![L3-1](Images/L3-1.png)
+---
 
-![L3-2](Images/L3-2.png)
+### 🔍 Cause
 
-This has been seen in the inspect tab and now know that our search str is being placed in a `img src` attr 
+The application reads user-controlled data from the URL and inserts it into the webpage using `document.write()` without validating or escaping it, allowing attackers to inject malicious scripts.
 
-![L3-3](Images/L3-3.png)
+---
 
-Solve the lab using this script / payload  :
+### 🛠️ Solution
+
+While inspecting the page, it was observed that the search string was being inserted into an `img src` attribute.
+
+<br>
+<img src="Images/L3-1.png" width="600" alt="Img 1">
+<br>
+
+<br>
+<img src="Images/L3-2.png" width="600" alt="Img 2">
+<br>
+
+From the inspect tab, it was confirmed that our search input is placed inside an `img src` attribute:
+
+<br>
+<img src="Images/L3-3.png" width="600" alt="Img 3">
+<br>
+
+The lab was solved using the following payload:
 
 ```
 "><script>alert(1)</script>
 ```
 
-alt :
+Alternative payload:
 
 ```
 "><svg onload=alert(1)>
 ```
 
-**Why alt is better ?** 
+
+---
+
+### Why is the alternative payload better?
 
 Sometimes:
 
 - `<script>` tags are filtered or blocked.
-- Certain contexts don’t allow `<script>` to execute.
-- Event handlers (`onload`, `onerror`) bypass weak filters.
+- Certain contexts do not allow `<script>` execution.
+- Event handlers like `onload` or `onerror` can bypass weak filtering mechanisms.
 
-So **`<svg onload=alert(1)>`** is often considered a more flexible or bypass-style payload**.**
+Therefore, the payload is often considered a more flexible bypass-style payload in real-world scenarios.
 
----
 
----
+
+
+
