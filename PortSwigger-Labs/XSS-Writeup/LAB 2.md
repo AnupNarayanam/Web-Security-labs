@@ -1,34 +1,39 @@
-# LAB 2 :
+# Lab 2: Stored XSS in Blog Comment Functionality
 
-This lab asks us to identify and exploit a **`Stored XSS` vulnerability** in an application that stores user input without any encoding.
+### 🚩 Vulnerability Overview  
+This lab demonstrates how a blog application is vulnerable to **Stored XSS**, allowing malicious JavaScript to be permanently stored and executed in other users’ browsers.
 
-**Recap [ Stored XSS ] :** 
-Happens when malicious input is saved by the server and later executed in other users’ browsers.
+### 📝 Recap [ Stored XSS ]  
+Stored XSS occurs when malicious input is saved by the server and later executed in other users’ browsers when they view the affected content.
 
-**Example :** in a database, comment field, or profile section).
+### 🔗 Example  
+This typically occurs in places like comment sections, profile fields, or any input that gets stored in a database and displayed later.
 
-**Cause :** Persistent storage of unsanitized user input that is later returned in the HTTP response without output encoding
+### 🔍 Cause  
+Persistent storage of unsanitized user input that is later returned in the HTTP response without output encoding.
 
-**Solution :**
-
-Solved this lab By just choosing any post and entering this script which triggers the Stored XSS .
+### 🛠️ Solution  
+Solved this lab by choosing any blog post and inserting the following payload into the comment section:
 
 ```
 <script>alert(1)</script>
 ```
+<br>
+<img src="Images/L2-1.png" width="600" alt="Img 1 ">
+<br>
 
-![L2-1](Images/L2-1.png)
+<br>
+<img src="Images/L2-2.png" width="600" alt="Img 2 ">
+<br>
 
-![L2-2](Images/L2-2.png)
+After submitting the comment, when navigating back to the blog post:
 
-But when i go back to the Blog !!
+<br>
+<img src="Images/L2-3.png" width="600" alt="Img 3 ">
+<br>
 
-![L2-3](Images/L2-3.png)
+Every user who visits this post will see the alert box triggered automatically, meaning the malicious script executes in their browser as well:
 
-Now this below image explains that every user who visit this post will see the above alert triggerd box and it will exec in their systems as well !
-
-![L2-4](Images/L2-4.png)
-
----
-
----
+<br>
+<img src="Images/L2-4.png" width="600" alt="Img 4 ">
+<br>
